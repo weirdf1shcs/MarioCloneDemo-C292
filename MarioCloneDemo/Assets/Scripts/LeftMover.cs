@@ -1,33 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class LeftMover : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpForce;
-    private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
+    private float frameCount;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        MoveLeft();
+        
+    }
+
+    private void FixedUpdate()
+    {
+        if (frameCount < 120)
+        {
+            frameCount++;
+        }
+        else
         {
             Jump();
+            frameCount = 0;
         }
-
-        Move();
     }
-    private void Move()
+
+    void MoveLeft()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        transform.Translate(moveInput * moveSpeed * Time.deltaTime, 0, 0);
+        transform.Translate(-moveSpeed * Time.deltaTime, 0, 0);
     }
     private void Jump()
     {
